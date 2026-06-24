@@ -17,6 +17,7 @@ from PyQt6.QtCore import Qt, QSize
 
 import data_manager
 from product_card import ProductCard, rounded_image
+from resource_path import resource_path, writable_path
 
 
 # =========================================================
@@ -194,7 +195,7 @@ class DakimakuraApp(QWidget):
         def nav_btn(text: str, icon: str, tooltip: str) -> QPushButton:
             btn = QPushButton(f"    {text}")
             btn.setFont(QFont("Arial", 24, QFont.Weight.Bold))
-            btn.setIcon(QIcon(f"icons/{icon}.png"))
+            btn.setIcon(QIcon(resource_path(f"icons/{icon}.png")))
             btn.setIconSize(QSize(24, 24))
             btn.setToolTip(tooltip)
             btn.setObjectName("navBtn")
@@ -224,7 +225,7 @@ class DakimakuraApp(QWidget):
 
         btn_excel = QPushButton("     Открыть Excel")
         btn_excel.setFont(QFont("Arial", 24, QFont.Weight.Bold))
-        btn_excel.setIcon(QIcon("icons/excel_btn.png"))
+        btn_excel.setIcon(QIcon(resource_path("icons/excel_btn.png")))
         btn_excel.setIconSize(QSize(24, 24))
         btn_excel.setToolTip("Открыть Excel")
         btn_excel.setObjectName("navBtn")
@@ -486,8 +487,9 @@ class DakimakuraApp(QWidget):
         if not file_name:
             return
 
-        os.makedirs("images", exist_ok=True)
-        dest = os.path.join("images", os.path.basename(file_name))
+        images_dir = writable_path("images")
+        os.makedirs(images_dir, exist_ok=True)
+        dest = os.path.join(images_dir, os.path.basename(file_name))
         if file_name != dest:
             shutil.copy2(file_name, dest)
 
